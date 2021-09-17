@@ -140,6 +140,7 @@ func (p *Provider) Provide(configurationChan chan<- dynamic.Message, pool *safe.
 					// Note that event is the *first* event that came in during this throttling interval -- if we're hitting our throttle, we may have dropped events.
 					// This is fine, because we don't treat different event types differently.
 					// But if we do in the future, we'll need to track more information about the dropped events.
+					// TODO 加载CRD对象，重新生成Traefik路由配置
 					conf := p.loadConfigurationFromCRD(ctxLog, k8sClient)
 
 					confHash, err := hashstructure.Hash(conf, nil)

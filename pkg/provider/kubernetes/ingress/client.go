@@ -135,6 +135,7 @@ func newClientImpl(clientset kubernetes.Interface) *clientWrapper {
 }
 
 // WatchAll starts namespace-specific controllers for all relevant kinds.
+// TODO 通过K8s Informer机制实现CRD资源监听，从而实现Traefik Operator功能
 func (c *clientWrapper) WatchAll(namespaces []string, stopCh <-chan struct{}) (<-chan interface{}, error) {
 	// Get and store the serverVersion for future use.
 	serverVersionInfo, err := c.clientset.Discovery().ServerVersion()
@@ -150,6 +151,7 @@ func (c *clientWrapper) WatchAll(namespaces []string, stopCh <-chan struct{}) (<
 	c.serverVersion = serverVersion
 
 	eventCh := make(chan interface{}, 1)
+	// TODO CRD事件处理器
 	eventHandler := &k8s.ResourceEventHandler{Ev: eventCh}
 
 	if len(namespaces) == 0 {

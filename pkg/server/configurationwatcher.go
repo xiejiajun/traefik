@@ -93,6 +93,7 @@ func (c *ConfigurationWatcher) startProvider() {
 	currentProvider := c.provider
 
 	safe.Go(func() {
+		// TODO 监听CRD资源变动，实现Operator的逻辑
 		err := currentProvider.Provide(c.configurationChan, c.routinesPool)
 		if err != nil {
 			logger.Errorf("Error starting provider %T: %s", currentProvider, err)

@@ -114,6 +114,7 @@ func (p *Provider) Provide(configurationChan chan<- dynamic.Message, pool *safe.
 
 	pool.GoCtx(func(ctxPool context.Context) {
 		operation := func() error {
+			// TODO 监听事件，实现Operator功能的主要入口
 			eventsChan, err := k8sClient.WatchAll(p.Namespaces, ctxPool.Done())
 			if err != nil {
 				logger.Errorf("Error watching kubernetes events: %v", err)
@@ -142,6 +143,7 @@ func (p *Provider) Provide(configurationChan chan<- dynamic.Message, pool *safe.
 					// dropped events. This is fine, because we don't treat different
 					// event types differently. But if we do in the future, we'll need to
 					// track more information about the dropped events.
+					// TODO 加载CRD对象，重新生成Traefik路由配置
 					conf := p.loadConfigurationFromIngresses(ctxLog, k8sClient)
 
 					confHash, err := hashstructure.Hash(conf, nil)
